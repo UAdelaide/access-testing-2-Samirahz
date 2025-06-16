@@ -6,4 +6,8 @@ const { router } = require('../app');
 var CURRENT_BUYER_ID = 1;
 var CURRENT_SELLER_ID = 2;
 
-router.get('/items', async ())
+router.get('/items', async (req, res) => {
+    
+}
+
+)
