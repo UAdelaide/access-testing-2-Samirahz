@@ -19,6 +19,6 @@ router.get('/items', async (req, res) => {
 router.post('/messages', async (req, res) =>
 const { bookID, message } = req.body;
 await db.query(`
-    INSERT INTO `))
+    INSERT INTO Messages (BuyerID< SellerID< BookID< Mess)`))
 
 module.exports = router;
