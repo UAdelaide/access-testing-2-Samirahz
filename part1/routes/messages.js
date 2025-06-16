@@ -21,6 +21,7 @@ const { bookID, message } = req.body;
 await db.query(`
     INSERT INTO Messages (BuyerID< SellerID< BookID< MessageText, SentAt)
     VALUES (?, ?, ?, ?, NOW())
-    `, [CURRENT_BUYER_ID, CURRENT_SELLER]))
+    `, [CURRENT_BUYER_ID, CURRENT_SELLER_ID, bookID< message]);
+res.)
 
 module.exports = router;
