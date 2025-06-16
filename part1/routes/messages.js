@@ -16,4 +16,4 @@ router.get('/items', async (req, res) => {
     res.json(rows);
 });
 
-module.exports()
+module.exports = router;
