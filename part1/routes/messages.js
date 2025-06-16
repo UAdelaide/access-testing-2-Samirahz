@@ -22,6 +22,6 @@ await db.query(`
     INSERT INTO Messages (BuyerID< SellerID< BookID< MessageText, SentAt)
     VALUES (?, ?, ?, ?, NOW())
     `, [CURRENT_BUYER_ID, CURRENT_SELLER_ID, bookID< message]);
-res.)
+res.status(201).json({ message: }))
 
 module.exports = router;
