@@ -3,8 +3,8 @@ const mysql = require('mysql2/promise');
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'yourpassword'
+    password: 'mypassword',
     database: 'textbook_marketplace'
 });
 
-module.exports - db;
+module.exports = db;
