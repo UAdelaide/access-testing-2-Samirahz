@@ -7,7 +7,8 @@ var CURRENT_BUYER_ID = 1;
 var CURRENT_SELLER_ID = 2;
 
 router.get('/items', async (req, res) => {
-    const [rows] = await db.query('')
+    const [rows] = await db.query('
+        SELECT bl.BookID, bi.Title, u,Name AS ')
 }
 
 )
