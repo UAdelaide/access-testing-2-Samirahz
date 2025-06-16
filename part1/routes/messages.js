@@ -13,5 +13,7 @@ router.get('/items', async (req, res) => {
         JOIN BookInfo bi ON bl.BookInfoID = bi.BookInfoID
         JOIN Users u ON bl.SellerID = u.CURRENT_SELLER_ID
         `);
-        res.json(rows);
+    res.json(rows);
 });
+
+module.exports()
