@@ -63,8 +63,8 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            bookID: this.selectedBookID,
-                            sellerID: this.selectedItem.
+                            bookID: this.selectItem.selectedBookID,
+                            sellerID: this.selectedItem.SellerID,
                             message: this.messageText
                         })
                     });
