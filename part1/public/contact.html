@@ -61,7 +61,8 @@
                             headers: { ' Content-Type': 'application/json' },
                             body: JSON.stringify({ bookID: this.selectedBookID, message: this.messagetext })
                         });
-                        alert('Message ')
+                        alert('Message sent!');
+                        this.messageText
                     }
                 }
             })
