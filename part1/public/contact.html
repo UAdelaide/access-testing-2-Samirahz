@@ -53,7 +53,9 @@
                 },
                 methods: {
                     async sendMessage(){
-                        if (!this.selectdBookID || !this.messageText)
+                        if (!this.selectdBookID || !this.messageText.trim()){
+                            return alert('Please select ')
+                        }
                     }
                 }
             })
