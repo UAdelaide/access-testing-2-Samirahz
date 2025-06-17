@@ -62,9 +62,11 @@
                             body: JSON.stringify({ bookID: this.selectedBookID, message: this.messagetext })
                         });
                         alert('Message sent!');
-                        this.messageText
+                        this.messageText = '';
                     }
                 }
+                
+
             })
 
         </script>
