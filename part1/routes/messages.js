@@ -1,5 +1,5 @@
 var express = require('express');
-var route = express.Router();
+var router = express.Router();
 var db = require('../db');
 const { router } = require('../app');
 
