@@ -51,7 +51,11 @@
                     const messagesRes = await fetch('/api/messages');
                     this.messages = await messagesRes.json();
                 },
-                methods
+                methods: {
+                    async sendMessage(){
+                        if (!this)
+                    }
+                }
             })
 
         </script>
