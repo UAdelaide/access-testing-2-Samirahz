@@ -57,7 +57,8 @@
                             return alert('Please select a book and enter a message: ');
                         }
                         await fetch('/api/messages', {
-                            method: 'Post'
+                            method: 'POST',
+                            headers: { ' Content-Type: '}
                         })
                     }
                 }
