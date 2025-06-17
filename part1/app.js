@@ -5,7 +5,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var messageRouter = require('/.routes/message');
+var messageRouter = require('./routes/message');
 
 var app = express();
 
