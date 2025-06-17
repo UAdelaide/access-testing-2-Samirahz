@@ -1,73 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Contact Seller</title>
-        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-        <style>
-            body { font-family: sans-serif; margin: auto; }
-        </style>
-    </head>
-    <body>
-        <div id="app">
-            <h1>Contact Seller</h1>
 
-            <select v-model="selectedBookID">
-                <option disabled value="">--Select a Book --</option>
-                <option v-for="item in items" : value="item.BookID">
-                    {{ item.Title }} (Seller: {{ item.SellerName }})
-                </option>
-            </select>
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Seller</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: auto;
+        }
+    </style>
+</head>
 
-            <textarea v-model="messageText" placeholder="Write your message..."></textarea>
+<body>
+    <div id="app">
+        <h1>Contact Seller</h1>
 
-            <button @click="sendMessage">Send</button>
+        <select v-model="selectedBookID">
+            <option disabled value="">--Select a Book --</option>
+            <option v-for="item in items" : value="item.BookID">
+                {{ item.Title }} (Seller: {{ item.SellerName }})
+            </option>
+        </select>
 
-            <h2>Message Received</h2>
-            <ul>
-                <li v-for="msg in messages">
-                    <strong> {{ msg.BuyerName }} </strong> about <em>{{ msg.Title }}</em> <br>
-                    {{ msg.Messagetext }} <small>({{ smg.SentAt }})</small>
+        <textarea v-model="messageText" placeholder="Write your message..."></textarea>
 
-                </li>
-            </ul>
-        </div>
+        <button @click="sendMessage">Send</button>
 
-        <script>
-            const { createApp } = Vue;
-            createApp({
-                data(){
-                    return {
-                        items: [],
-                        selectedBookID: '',
-                        messagetext: '',
-                        messages: []
-                    };
-                },
-                async mounted(){
-                    const itemsres = await fetch('/api/items');
-                    this.items = await itemsRes.json();
+        <h2>Message Received</h2>
+        <ul>
+            <li v-for="msg in messages">
+                <strong> {{ msg.BuyerName }} </strong> about <em>{{ msg.Title }}</em> <br>
+                {{ msg.Messagetext }} <small>({{ smg.SentAt }})</small>
 
-                    const messagesRes = await fetch('/api/messages');
-                    this.messages = await messagesRes.json();
-                },
-                methods: {
-                    async sendMessage(){
-                        if (!this.selectdBookID || !this.messageText.trim()){
-                            return alert('Please select a book and enter a message: ');
-                        }
-                        await fetch('/api/messages', {
-                            method: 'POST',
-                            headers: { ' Content-Type': 'application/json' },
-                            body: JSON.stringify({ bookID: this.selectedBookID, message: this.messagetext })
-                        });
-                        alert('Message sent!');
-                        this.messageText = '';
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    items: [],
+                    selectedBookID: '',
+                    messagetext: '',
+                    messages: []
+                };
+            },
+            async mounted() {
+                const itemsres = await fetch('/api/items');
+                this.items = await itemsRes.json();
+
+                const messagesRes = await fetch('/api/messages');
+                this.messages = await messagesRes.json();
+            },
+            methods: {
+                async sendMessage() {
+                    if (!this.selectdBookID || !this.messageText.trim()) {
+                        return alert('Please select a book and enter a message: ');
                     }
+                    await fetch('/api/messages', {
+                        method: 'POST',
+                        headers: { ' Content-Type': 'application/json' },
+                        body: JSON.stringify({ bookID: this.selectedBookID, message: this.messagetext })
+                    });
+                    alert('Message sent!');
+                    this.messageText = '';
                 }
+            }
 
-            }).mount
+        }).mount('#app');
 
-        </script>
-    </body>
+    </script>
+</body>
+
 </html>
