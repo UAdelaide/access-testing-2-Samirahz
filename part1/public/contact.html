@@ -49,8 +49,9 @@
                     this.items = await itemsRes.json();
 
                     const messagesRes = await fetch('/api/messages');
-                    this.messages
-                }
+                    this.messages = await messagesRes.json();
+                },
+                methods
             })
 
         </script>
