@@ -37,7 +37,11 @@
             const { createApp } = Vue;
             createApp({
                 data(){
-                    return 
+                    return {
+                        items: [],
+                        selectedBookID: '',
+                        message
+                    }
                 }
             })
 
