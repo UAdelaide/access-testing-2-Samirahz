@@ -56,7 +56,9 @@
                         if (!this.selectdBookID || !this.messageText.trim()){
                             return alert('Please select a book and enter a message: ');
                         }
-                        await fetch()
+                        await fetch('/api/messages', {
+                            method: 'Post'
+                        })
                     }
                 }
             })
