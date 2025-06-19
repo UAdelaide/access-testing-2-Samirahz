@@ -40,8 +40,6 @@ router.get('/posts', function (req, res, next) {
   });
 
 });
-
-
 router.post('/addpost', function (req, res, next) {
 
   if ("title" in req.body && req.body.title != null &&
@@ -63,7 +61,6 @@ router.post('/addpost', function (req, res, next) {
           connection.release(); // release connection if error
           return;
         }
-
         // If successful, add tags
         // Build & run query
         let tags = '';
@@ -83,13 +80,8 @@ router.post('/addpost', function (req, res, next) {
         });
       });
     });
-
   } else {
     res.sendStatus(400);
   }
-
-
 });
-
-
 module.exports = router;
