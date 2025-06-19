@@ -38,15 +38,12 @@ router.get('/posts', function (req, res, next) {
       res.json(rows); //send response
     });
   });
-
 });
 router.post('/addpost', function (req, res, next) {
-
   if ("title" in req.body && req.body.title != null &&
     "content" in req.body && req.body.content != null &&
     "tags" in req.body) {
     req.body.author = req.session.user;
-
     req.pool.getConnection(function (err, connection) {
       if (err) {
         res.sendStatus(500);
