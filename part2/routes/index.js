@@ -78,7 +78,10 @@ router.post('/addpost', function (req, res) {
           }
           res.end();
         }),
+       res.end();
+        }),
       });
+    });
     });
   } else {
     res.sendStatus(400);
