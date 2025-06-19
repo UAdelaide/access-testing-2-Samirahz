@@ -1,23 +1,19 @@
 const express = require('express');
 const router = express.Router();
-
 /* GET home page */
 router.get('/', function (req, res) {
   res.render('index', { title: 'Express' });
 });
-
 /* GET posts */
 router.get('/posts', function (req, res) {
   if (req.session && req.session.user) {
     console.log(req.session.user);
   }
-
   req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
     }
-
     const query = `
       SELECT q_tags.tags,
              users.given_name AS author,
