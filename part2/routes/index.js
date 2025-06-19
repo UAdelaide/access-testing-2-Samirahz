@@ -1,77 +1,96 @@
-var express = require('express');
-var router = express.Router();
-/* GET home page. */
-router.get('/', function (req, res, next) {
+const express = require('express');
+const router = express.Router();
+
+/* GET home page */
+router.get('/', function (req, res) {
   res.render('index', { title: 'Express' });
 });
-router.get('/posts', function (req, res, next) {
-  if ('user' in req.session) {
+
+/* GET posts */
+router.get('/posts', function (req, res) {
+  if (req.session && req.session.user) {
     console.log(req.session.user);
   }
+
   req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
     }
-    var query = `SELECT  q_tags.tags,
-                          users.given_name AS author,
-                          questions.title,
-                          questions.content,
-                          questions.timestamp,
-                          questions.q_id,
-                          IFNULL(q_up.tally,0) AS upvotes
-                  FROM questions INNER JOIN users ON questions.author = users.u_id
-                  LEFT JOIN q_tags ON q_tags.question = questions.q_id
-                  LEFT JOIN q_up ON q_up.question = questions.q_id;
-                  `;
-    connection.query(query, function (err, rows, fields) {
-      connection.release(); // release connection
+
+    const query = `
+      SELECT q_tags.tags,
+             users.given_name AS author,
+             questions.title,
+             questions.content,
+             questions.timestamp,
+             questions.q_id,
+             IFNULL(q_up.tally, 0) AS upvotes
+      FROM questions
+      INNER JOIN users ON questions.author = users.u_id
+      LEFT JOIN q_tags ON q_tags.question = questions.q_id
+      LEFT JOIN q_up ON q_up.question = questions.q_id;
+    `;
+
+    connection.query(query, function (err, rows) {
+      connection.release();
       if (err) {
         res.sendStatus(500);
         return;
       }
-      for (let row of rows) {
-        row.tags = row.tags.split(',');
+
+      for (const row of rows) {
+        row.tags = row.tags ? row.tags.split(',') : [];
       }
-      res.json(rows); //send response
+
+      res.json(rows);
     });
   });
 });
-router.post('/addpost', function (req, res, next) {
-  if ("title" in req.body && req.body.title != null &&
-    "content" in req.body && req.body.content != null &&
-    "tags" in req.body) {
-    req.body.author = req.session.user;
+
+/* POST add post */
+router.post('/addpost', function (req, res) {
+  const { title, content, tags } = req.body;
+
+  if (title && content && Array.isArray(tags) && req.session && req.session.user) {
+    const author = req.session.user;
+
     req.pool.getConnection(function (err, connection) {
       if (err) {
+        console.error(err);
         res.sendStatus(500);
-        console.log(err);
         return;
       }
-      var query = `INSERT INTO questions (author,title,content,timestamp) VALUES (?,?,?,NOW());`;
-      connection.query(query, [req.body.author.u_id, req.body.title, req.body.content], function (err, rows, fields) {
+
+      const insertQuestionQuery = `
+        INSERT INTO questions (author, title, content, timestamp)
+        VALUES (?, ?, ?, NOW());
+      `;
+
+      connection.query(insertQuestionQuery, [author.u_id, title, content], function (err) {
         if (err) {
+          console.error(err);
+          connection.release();
           res.sendStatus(500);
-          console.log(err);
-          connection.release(); // release connection if error
           return;
         }
-        // If successful, add tags
-        // Build & run query
-        let tags = '';
-        for (tag of req.body.tags) {
-          tags += `('${tag}',LAST_INSERT_ID()),`
+
+        if (tags.length === 0) {
+          connection.release();
+          res.end();
+          return;
         }
-        tags = tags.replace(/,$/, '');
-        var query = 'INSERT INTO question_tags (tagname,question) VALUES ' + tags + ';';
-        connection.query(query, [req.body.author, req.body.title, req.body.content], function (err, rows, fields) {
-          connection.release(); // release connection
+
+        const tagValues = tags.map(tag => `('${tag}', LAST_INSERT_ID())`).join(',');
+        const insertTagsQuery = `INSERT INTO question_tags (tagname, question) VALUES ${tagValues};`;
+        connection.query(insertTagsQuery, function (err) {
+          connection.release();
           if (err) {
+            console.error(err);
             res.sendStatus(500);
-            console.log(err);
             return;
           }
-          res.end(); //send response
+          res.end();
         });
       });
     });
