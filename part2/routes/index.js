@@ -77,7 +77,8 @@ router.post('/addpost', function (req, res) {
             return;
           }
           res.end();
-      });
+      }),
+    });
     });
   } else {
     res.sendStatus(400);
