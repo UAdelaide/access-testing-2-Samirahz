@@ -22,7 +22,8 @@ router.get('/posts', function (req, res, next) {
                           IFNULL(q_up.tally,0) AS upvotes
                   FROM questions INNER JOIN users ON questions.author = users.u_id
                   LEFT JOIN q_tags ON q_tags.question = questions.q_id
-                  LEFT JOIN q_up ON q_up.question = questions.q_id;`;
+                  LEFT JOIN q_up ON q_up.question = questions.q_id;
+                  `;
     connection.query(query, function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
